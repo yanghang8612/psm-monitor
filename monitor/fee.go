@@ -44,8 +44,8 @@ func track() {
 
 	tronLowPrice := trxPrice * energyPrice * (1 + factor/1e4) * 14650 / 1e6
 	tronHighPrice := trxPrice * energyPrice * (1 + factor/1e4) * 29650 / 1e6
-	ethLowPrice := ethPrice * float64(gasPrice) * 41309 / 1e9
-	ethHighPrice := ethPrice * float64(gasPrice) * 63209 / 1e9
+	ethLowPrice := ethPrice * gasPrice * 41309 / 1e9
+	ethHighPrice := ethPrice * gasPrice * 63209 / 1e9
 
 	appDB.Create(&Record{TrackedAt: time.Now(), TronLowPrice: tronLowPrice, TronHighPrice: tronHighPrice, EthLowPrice: ethLowPrice, EthHighPrice: ethHighPrice})
 }

@@ -105,7 +105,7 @@ func GetPrice(token string) float64 {
 	return price
 }
 
-func GetGasPrice() int {
+func GetGasPrice() float64 {
 	result, err := Get("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=82SMH9HIUESXN4IPSFA237VHIMHQB1AQSI", nil)
 	if err != nil {
 		return 0
@@ -113,7 +113,7 @@ func GetGasPrice() int {
 
 	gasPriceStr := gojsonq.New().FromString(string(result)).Find("result.ProposeGasPrice")
 
-	gasPrice, err := strconv.Atoi(gasPriceStr.(string))
+	gasPrice, err := strconv.ParseFloat(gasPriceStr.(string), 64)
 	if err != nil {
 		return 0
 	}
