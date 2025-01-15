@@ -105,8 +105,32 @@ func GetPrice(token string) float64 {
 	return price
 }
 
-func GetGasPrice() float64 {
-	result, err := Get("https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=82SMH9HIUESXN4IPSFA237VHIMHQB1AQSI", nil)
+func GetSolPrice() float64 {
+	result, err := Get("https://api.coingecko.com/api/v3/simple/price?ids=solana&vs_currencies=usd", nil)
+	if err != nil {
+		return 0
+	}
+
+	priceStr := gojsonq.New().FromString(string(result)).Find("solana.usd")
+
+	price, err := strconv.ParseFloat(priceStr.(string), 64)
+	if err != nil {
+		return 0
+	}
+	return price
+}
+
+func GetGasPrice(chain string) float64 {
+	endpoint := ""
+	switch chain {
+	case "Ethereum":
+		endpoint = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=82SMH9HIUESXN4IPSFA237VHIMHQB1AQSI"
+	case "Polygon":
+		endpoint = "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=QV6MEUX33CS6J8M478MIISG8UW257NKMZS"
+	default:
+		return 0.0
+	}
+	result, err := Get(endpoint, nil)
 	if err != nil {
 		return 0
 	}
@@ -118,6 +142,39 @@ func GetGasPrice() float64 {
 		return 0
 	}
 	return gasPrice
+}
+
+func GetAvalanchePrice() float64 {
+	response, err := Get("https://api.owlracle.info/v4/avax/gas", nil)
+	if err != nil {
+		return 0
+	}
+
+	type resJson struct {
+		Timestamp string  `json:"timestamp"`
+		LastBlock int     `json:"lastBlock"`
+		AvgTime   float64 `json:"avgTime"`
+		AvgTx     float64 `json:"avgTx"`
+		AvgGas    float64 `json:"avgGas"`
+		Speeds    []struct {
+			Acceptance           float64 `json:"acceptance"`
+			MaxFeePerGas         float64 `json:"maxFeePerGas"`
+			MaxPriorityFeePerGas float64 `json:"maxPriorityFeePerGas"`
+			BaseFee              float64 `json:"baseFee"`
+			EstimatedFee         float64 `json:"estimatedFee"`
+		} `json:"speeds"`
+	}
+
+	var res resJson
+	if parseErr := json.Unmarshal(response, &res); parseErr == nil {
+		for _, speed := range res.Speeds {
+			if speed.Acceptance > 0.5 && speed.Acceptance < 1.0 {
+				return speed.MaxFeePerGas
+			}
+		}
+	}
+
+	return 0.0
 }
 
 func GetEnergyPriceAndFactor() (float64, float64) {
