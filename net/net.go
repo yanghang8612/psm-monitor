@@ -111,12 +111,8 @@ func GetSolPrice() float64 {
 		return 0
 	}
 
-	priceStr := gojsonq.New().FromString(string(result)).Find("solana.usd")
+	price := gojsonq.New().FromString(string(result)).Find("solana.usd").(float64)
 
-	price, err := strconv.ParseFloat(priceStr.(string), 64)
-	if err != nil {
-		return 0
-	}
 	return price
 }
 
