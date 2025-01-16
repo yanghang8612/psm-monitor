@@ -120,12 +120,12 @@ func report() {
 
 	slackMessage := ""
 	slackMessage += fmt.Sprintf("USDT 日均手续费:\n"+
-		"> TRON: `%.2f$` - `%.2f$`\n"+
-		"> ETH: `%.2f$` - `%.2f$`\n"+
-		"> BSC: `%.2f$` - `%.2f$`\n"+
-		"> Polgon: `%.2f$` - `%.2f$`\n"+
-		"> Avalanche: `%.2f$` - `%.2f$`\n"+
-		"> Solana: `%.2f$` - `%.2f$`\n",
+		"> TRON: `%.5f$` - `%.5f$`\n"+
+		"> ETH: `%.5f$` - `%.5f$`\n"+
+		"> BSC: `%.5f$` - `%.5f$`\n"+
+		"> Polgon: `%.5f$` - `%.5f$`\n"+
+		"> Avalanche: `%.5f$` - `%.5f$`\n"+
+		"> Solana: `%.5f$` - `%.5f$`\n",
 		dayAvgRecord.TronLowPrice, dayAvgRecord.TronHighPrice,
 		dayAvgRecord.EthLowPrice, dayAvgRecord.EthHighPrice,
 		dayAvgRecord.BscLowPrice, dayAvgRecord.BscHighPrice,
@@ -134,12 +134,12 @@ func report() {
 		dayAvgRecord.SolanaLowPrice, dayAvgRecord.SolanaHighPrice)
 
 	slackMessage += fmt.Sprintf("USDT 周均手续费:\n"+
-		"> TRON: `%.2f$` - `%.2f$`\n"+
-		"> ETH: `%.2f$` - `%.2f$`\n"+
-		"> BSC: `%.2f$` - `%.2f$`\n"+
-		"> Polgon: `%.2f$` - `%.2f$`\n"+
-		"> Avalanche: `%.2f$` - `%.2f$`\n"+
-		"> Solana: `%.2f$` - `%.2f$`\n",
+		"> TRON: `%.5f$` - `%.5f$`\n"+
+		"> ETH: `%.5f$` - `%.5f$`\n"+
+		"> BSC: `%.5f$` - `%.5f$`\n"+
+		"> Polgon: `%.5f$` - `%.5f$`\n"+
+		"> Avalanche: `%.5f$` - `%.5f$`\n"+
+		"> Solana: `%.5f$` - `%.5f$`\n",
 		weekAvgRecord.TronLowPrice, weekAvgRecord.TronHighPrice,
 		weekAvgRecord.EthLowPrice, weekAvgRecord.EthHighPrice,
 		weekAvgRecord.BscLowPrice, weekAvgRecord.BscHighPrice,
