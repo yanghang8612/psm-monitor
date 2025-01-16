@@ -81,8 +81,8 @@ func track() {
 	avalancheLowPrice := avaxPrice * avaxGasPrice * 44038 / 1e9
 	avalancheHighPrice := avaxPrice * avaxGasPrice * 61138 / 1e9
 
-	solanaLowPrice := solPrice * 15 / 1e6
-	solanaHighPrice := solPrice * 105 / 1e6
+	solanaLowPrice := solPrice * 10 * 40000 / 1e9
+	solanaHighPrice := solPrice * 10 * 17000 / 1e9
 
 	appDB.Create(&Record{TrackedAt: time.Now(),
 		TronLowPrice: tronLowPrice, TronHighPrice: tronHighPrice,
