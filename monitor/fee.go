@@ -96,21 +96,27 @@ func track() {
 func report() {
 	now := time.Now()
 
-	var dayAvgs [12]float64
+	var dayAvgRecord Record
 	preDay := now.AddDate(0, 0, -1)
 	appDB.Model(&Record{}).
-		Select("AVG(tron_low_price), AVG(tron_high_price), AVG(eth_low_price), AVG(eth_high_price), "+
-			"AVG(bsc_low_price), AVG(bsc_high_price), AVG(polygon_low_price), AVG(polygon_high_price), "+
-			"AVG(avalanche_low_price), AVG(avalanche_high_price), AVG(solana_low_price), AVG(solana_high_price)").
-		Where("tracked_at BETWEEN ? AND ?", preDay, now).Row().Scan(&dayAvgs)
+		Select("AVG(tron_low_price) as tron_low_price, AVG(tron_high_price) as tron_high_price, "+
+			"AVG(eth_low_price) as eth_low_price, AVG(eth_high_price) as eth_high_price, "+
+			"AVG(bsc_low_price) as bsc_low_price, AVG(bsc_high_price) as bsc_high_price, "+
+			"AVG(polygon_low_price) as polygon_low_price, AVG(polygon_high_price) as polygon_high_price, "+
+			"AVG(avalanche_low_price) as avalanche_low_price, AVG(avalanche_high_price) as avalanche_high_price, "+
+			"AVG(solana_low_price) as solana_low_price, AVG(solana_high_price) as solana_high_price").
+		Where("tracked_at BETWEEN ? AND ?", preDay, now).Find(&dayAvgRecord)
 
-	var weekAvgs [12]float64
+	var weekAvgRecord Record
 	preWeek := now.AddDate(0, 0, -7)
 	appDB.Model(&Record{}).
-		Select("AVG(tron_low_price), AVG(tron_high_price), AVG(eth_low_price), AVG(eth_high_price), "+
-			"AVG(bsc_low_price), AVG(bsc_high_price), AVG(polygon_low_price), AVG(polygon_high_price), "+
-			"AVG(avalanche_low_price), AVG(avalanche_high_price), AVG(solana_low_price), AVG(solana_high_price)").
-		Where("tracked_at BETWEEN ? AND ?", preWeek, now).Row().Scan(&weekAvgs)
+		Select("AVG(tron_low_price) as tron_low_price, AVG(tron_high_price) as tron_high_price, "+
+			"AVG(eth_low_price) as eth_low_price, AVG(eth_high_price) as eth_high_price, "+
+			"AVG(bsc_low_price) as bsc_low_price, AVG(bsc_high_price) as bsc_high_price, "+
+			"AVG(polygon_low_price) as polygon_low_price, AVG(polygon_high_price) as polygon_high_price, "+
+			"AVG(avalanche_low_price) as avalanche_low_price, AVG(avalanche_high_price) as avalanche_high_price, "+
+			"AVG(solana_low_price) as solana_low_price, AVG(solana_high_price) as solana_high_price").
+		Where("tracked_at BETWEEN ? AND ?", preWeek, now).Find(&weekAvgRecord)
 
 	slackMessage := ""
 	slackMessage += fmt.Sprintf("USDT 日均手续费:\n"+
@@ -120,9 +126,12 @@ func report() {
 		"> Polgon: `%.2f$` - `%.2f$`\n"+
 		"> Avalanche: `%.2f$` - `%.2f$`\n"+
 		"> Solana: `%.2f$` - `%.2f$`\n",
-		dayAvgs[0], dayAvgs[1], dayAvgs[2], dayAvgs[3],
-		dayAvgs[4], dayAvgs[5], dayAvgs[6], dayAvgs[7],
-		dayAvgs[8], dayAvgs[9], dayAvgs[10], dayAvgs[11])
+		dayAvgRecord.TronLowPrice, dayAvgRecord.TronHighPrice,
+		dayAvgRecord.EthLowPrice, dayAvgRecord.EthHighPrice,
+		dayAvgRecord.BscLowPrice, dayAvgRecord.BscHighPrice,
+		dayAvgRecord.PolygonLowPrice, dayAvgRecord.PolygonHighPrice,
+		dayAvgRecord.AvalancheLowPrice, dayAvgRecord.AvalancheHighPrice,
+		dayAvgRecord.SolanaLowPrice, dayAvgRecord.SolanaHighPrice)
 
 	slackMessage += fmt.Sprintf("USDT 周均手续费:\n"+
 		"> TRON: `%.2f$` - `%.2f$`\n"+
@@ -131,9 +140,12 @@ func report() {
 		"> Polgon: `%.2f$` - `%.2f$`\n"+
 		"> Avalanche: `%.2f$` - `%.2f$`\n"+
 		"> Solana: `%.2f$` - `%.2f$`\n",
-		weekAvgs[0], weekAvgs[1], weekAvgs[2], weekAvgs[3],
-		weekAvgs[4], weekAvgs[5], weekAvgs[6], weekAvgs[7],
-		weekAvgs[8], weekAvgs[9], weekAvgs[10], weekAvgs[11])
+		weekAvgRecord.TronLowPrice, weekAvgRecord.TronHighPrice,
+		weekAvgRecord.EthLowPrice, weekAvgRecord.EthHighPrice,
+		weekAvgRecord.BscLowPrice, weekAvgRecord.BscHighPrice,
+		weekAvgRecord.PolygonLowPrice, weekAvgRecord.PolygonHighPrice,
+		weekAvgRecord.AvalancheLowPrice, weekAvgRecord.AvalancheHighPrice,
+		weekAvgRecord.SolanaLowPrice, weekAvgRecord.SolanaHighPrice)
 
 	slack.ReportFee(slackMessage)
 }
