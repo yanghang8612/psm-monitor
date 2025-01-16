@@ -44,6 +44,10 @@ func StartTrackFee(c *cron.Cron) {
 	appDB = db
 }
 
+func ReportFee() {
+	report()
+}
+
 func track() {
 	trxPrice := net.GetPrice("TRX")
 	energyPrice, factor := net.GetEnergyPriceAndFactor()
@@ -95,16 +99,16 @@ func report() {
 	var dayAvgs [12]float64
 	preDay := now.AddDate(0, 0, -1)
 	appDB.Model(&Record{}).
-		Select("AVG(tron_low_price), AVG(tron_high_price), AVG(eth_low_price), AVG(eth_high_price)， "+
-			"AVG(bsc_low_price), AVG(bsc_high_price), AVG(polygon_low_price), AVG(polygon_high_price)， "+
+		Select("AVG(tron_low_price), AVG(tron_high_price), AVG(eth_low_price), AVG(eth_high_price), "+
+			"AVG(bsc_low_price), AVG(bsc_high_price), AVG(polygon_low_price), AVG(polygon_high_price), "+
 			"AVG(avalanche_low_price), AVG(avalanche_high_price), AVG(solana_low_price), AVG(solana_high_price)").
 		Where("tracked_at BETWEEN ? AND ?", preDay, now).Row().Scan(&dayAvgs)
 
 	var weekAvgs [12]float64
 	preWeek := now.AddDate(0, 0, -7)
 	appDB.Model(&Record{}).
-		Select("AVG(tron_low_price), AVG(tron_high_price), AVG(eth_low_price), AVG(eth_high_price)， "+
-			"AVG(bsc_low_price), AVG(bsc_high_price), AVG(polygon_low_price), AVG(polygon_high_price)， "+
+		Select("AVG(tron_low_price), AVG(tron_high_price), AVG(eth_low_price), AVG(eth_high_price), "+
+			"AVG(bsc_low_price), AVG(bsc_high_price), AVG(polygon_low_price), AVG(polygon_high_price), "+
 			"AVG(avalanche_low_price), AVG(avalanche_high_price), AVG(solana_low_price), AVG(solana_high_price)").
 		Where("tracked_at BETWEEN ? AND ?", preWeek, now).Row().Scan(&weekAvgs)
 

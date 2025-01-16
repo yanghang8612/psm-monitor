@@ -3,6 +3,7 @@ fee_slack_webhook = "...(your fee slack webhook url)"
 log_level = "debug"
 full_node = "https://api.trongrid.io/"
 event_server = "https://api.trongrid.io/"
+report_fee_at_start = true
 [SUN]
 swap_threshold = 100_000
 liquidity_threshold = 100_000

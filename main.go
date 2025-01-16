@@ -1,6 +1,7 @@
 package main
 
 import (
+	"psm-monitor/config"
 	"psm-monitor/misc"
 	"psm-monitor/monitor"
 	"psm-monitor/net"
@@ -30,6 +31,10 @@ func main() {
 	monitor.StartTrackFee(c)
 	_ = c.AddFunc("*/3 * * * * ?", misc.WrapLog(track))
 	c.Start()
+
+	if config.Get().ReportFeeAtStart {
+		monitor.ReportFee()
+	}
 
 	defer c.Stop()
 	select {}
