@@ -56,7 +56,7 @@ func track() {
 	ethGasPrice := net.GetGasPrice("Ethereum")
 
 	bnbPrice := net.GetPrice("BNB")
-	bnbGasPrice := 1.0
+	bscGasPrice := net.GetGasPrice("BSC")
 
 	polPrice := net.GetPrice("POL")
 	polGasPrice := net.GetGasPrice("Polygon")
@@ -72,8 +72,8 @@ func track() {
 	ethLowPrice := ethPrice * ethGasPrice * 41309 / 1e9
 	ethHighPrice := ethPrice * ethGasPrice * 63209 / 1e9
 
-	bscLowPrice := bnbPrice * bnbGasPrice * 34515 / 1e9
-	bscHighPrice := bnbPrice * bnbGasPrice * 51627 / 1e9
+	bscLowPrice := bnbPrice * bscGasPrice * 34515 / 1e9
+	bscHighPrice := bnbPrice * bscGasPrice * 51627 / 1e9
 
 	polygonLowPrice := polPrice * polGasPrice * 35394 / 1e9
 	polygonHighPrice := polPrice * polGasPrice * 57306 / 1e9

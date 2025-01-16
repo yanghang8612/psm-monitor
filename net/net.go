@@ -121,6 +121,8 @@ func GetGasPrice(chain string) float64 {
 	switch chain {
 	case "Ethereum":
 		endpoint = "https://api.etherscan.io/api?module=gastracker&action=gasoracle&apikey=82SMH9HIUESXN4IPSFA237VHIMHQB1AQSI"
+	case "BSC":
+		endpoint = "https://api.bscscan.com/api?module=gastracker&action=gasoracle&apikey=2KQEVAIUCKJ6E5GZAQN8HUDPM7FSSSRS54"
 	case "Polygon":
 		endpoint = "https://api.polygonscan.com/api?module=gastracker&action=gasoracle&apikey=QV6MEUX33CS6J8M478MIISG8UW257NKMZS"
 	default:
