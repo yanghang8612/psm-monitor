@@ -170,6 +170,8 @@ func GetAvalanchePrice() float64 {
 				return speed.MaxFeePerGas
 			}
 		}
+	} else {
+		misc.Warn("GetAvalanchePrice", parseErr.Error())
 	}
 
 	return 0.0
