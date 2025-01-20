@@ -143,7 +143,7 @@ func GetGasPrice(chain string) float64 {
 }
 
 func GetAvalanchePrice() float64 {
-	response, err := Get("https://api.owlracle.info/v4/avax/gas", nil)
+	response, err := Get("https://api.owlracle.info/v4/avax/gas?apikey=19bb332f8f5746f69c96fd2925b46f56", nil)
 	if err != nil {
 		return 0
 	}
